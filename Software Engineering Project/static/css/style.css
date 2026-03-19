@@ -1,0 +1,160 @@
+body{
+    background-color: lightskyblue;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+a {
+    color: slategray;
+    text-decoration: none;
+}
+#pageNav{
+    position: fixed;
+    border: 2px solid;
+    border-radius: 10px;
+    width: 300px;
+    height: 90%;
+    background: rgb(29, 51, 146);
+    left:-350px;
+    top:5%;
+    padding: 0px 0;
+    z-index: 1000;
+    transition: 1s;
+    overflow:hidden;
+    white-space: nowrap;
+
+}
+
+.sidebar-item{
+    text-decoration: none;
+    color: black;
+    display: flex;
+    padding: 1em;
+    align-items: center;
+}
+.sidebar-item > div{
+    padding: 0 1em;
+}
+
+.sidebar-item > svg{
+    flex-shrink: 0;
+}
+
+.sidebar-item:hover{
+    transform: translate(20px, 0);
+}
+
+.nav-menu{
+    color: purple;
+    margin-bottom: 30px;
+    padding: 0 20px;
+    display: block;
+    transition: 0.4s;
+    opacity: 0;
+    margin-left: -50px;
+}
+
+svg{
+    color: black;
+}
+
+#overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.3;
+    transition: 2s;
+    z-index: 1;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+}
+
+#menu{
+    align-self:center;
+    padding: 10px;
+}
+
+#menu:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+#window{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    height:80vh;
+    width: 80vh;
+    border: 7px solid;
+    background-color:aliceblue;
+    border-color: black;
+}
+
+.homeDisplay{
+    border: 2px solid;
+}
+
+#topBar{
+    width: 100vw;
+    padding: 0 0;
+    height: 50px;
+    z-index: 5;
+    background-color: steelblue;
+    position: fixed;
+    display: flex;
+}
+
+.topBarItem{
+    align-self: center;
+    padding: 30px;
+}
+
+main{
+    margin-top: 60px;
+    margin-left: 30px;
+}
+
+.game{
+    display: inline-block;
+    border: 1px solid hsl(0, 0, 50%);
+    margin: 5px;
+    width: 200px;
+}
+
+.game img{
+    width: 100%;
+    height: auto;
+}
+
+.game .title{
+    padding: 10px;
+    text-align: center;
+}
+
+#theButton{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 90px;
+    width: 135px;
+    background-color: lightcoral;
+    border: coral solid;
+    border-radius: 50px;
+}
+
+#score{
+    position: absolute;
+    top: 60%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
+#theButton:hover{
+    background-color: pink;
+    cursor: pointer;
+}

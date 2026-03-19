@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+    <main>
+        <div class="game">
+            <a href=" {{ url_for('game_page', game_id='1')}}">
+                <img src=" {{ url_for('media', path='icons/tictactoe.png') }} ">
+            </a>
+            <div class ="title">Tic-Tac-Toe</div>
+        </div>
+        <div class="game">
+            <a href=" {{ url_for('game_page', game_id='2')}} ">
+                <img src=" {{ url_for('media', path='icons/minesweeper.png') }} ">
+            </a>
+            <div class ="title">Minesweeper</div>
+        </div>
+        <div class="game">
+            <a href=" {{ url_for('game_page', game_id='3')}} ">
+                <img src=" {{ url_for('media', path='icons/2048.png') }} ">
+            </a>
+            <div class ="title">2048</div>
+        </div>
+    </main>
+{% endblock content %}
+{% block script %}
+        <script src=" {{ url_for('static', path='js/script.js') }} "></script>
+{% endblock script %}
