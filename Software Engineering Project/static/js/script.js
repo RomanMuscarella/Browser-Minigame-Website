@@ -1,4 +1,5 @@
 const menu = document.getElementById('menu')
+const menu2 = document.getElementById('menu2')
 const pageNav = document.getElementById('pageNav')
 const overlay = document.getElementById('overlay')
 
@@ -17,6 +18,12 @@ function closeMenu() {
 }
 
 menu.addEventListener('click', function() {
+    if(!menuOpen) {
+        openMenu()
+    }
+})
+
+menu2.addEventListener('click', function() {
     if(!menuOpen) {
         openMenu()
     }

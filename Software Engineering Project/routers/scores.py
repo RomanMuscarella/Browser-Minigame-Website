@@ -5,9 +5,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-import models
+import models as models
 from database import get_db
 from schemas import ScoreCreate, ScoreResponse, ScoreUpdate
+
+from auth import CurrentUser
 
 router = APIRouter()
 
@@ -16,19 +18,11 @@ router = APIRouter()
     response_model=ScoreResponse,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_score(score: ScoreCreate, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(select(models.User).where(models.User.id == score.user_id))
-    user = result.scalars().first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
-
+async def create_score(score: ScoreCreate, current_user:CurrentUser, db: Annotated[AsyncSession, Depends(get_db)]):
     new_post = models.Score(
         game = score.game,
         val=score.val,
-        user_id=score.user_id,
+        user_id=current_user.id,
     )
     db.add(new_post)
     await db.commit()

@@ -13,9 +13,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-import models
+import models as models
+from routers import scores
 from database import Base, engine, get_db
-from routers import users, scores
+from routers import users
 
 
 @asynccontextmanager
@@ -84,8 +85,27 @@ async def game_page(request: Request, game_id: int, db: Annotated[AsyncSession, 
         )
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Game not found")
 
+@app.get("/login", include_in_schema = False)
+async def login_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "login.html",
+        {"title": "Login"},
+    )
 
+@app.get("/signup", include_in_schema = False)
+async def signup_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "signup.html",
+        {"title": "Signup"},
+    )
 
+@app.get("/account", include_in_schema=False)
+async def account_page(request: Request):
+    return templates.TemplateResponse(
+        request, "account.html", {"title": "Account"},
+    )
 
 
 

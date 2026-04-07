@@ -18,6 +18,7 @@ class User(Base):
         nullable=True,
         default = None,
     )
+    password_hash: Mapped[str] = mapped_column(String(200), nullable=False)
 
     scores: Mapped[list[Score]] = relationship(back_populates="username", cascade="all, delete-orphan",)
 
