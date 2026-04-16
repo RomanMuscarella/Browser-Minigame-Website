@@ -3,21 +3,27 @@
     <main>
         <div class="game">
             <a href=" {{ url_for('game_page', game_id='1')}}">
-                <img src=" {{ url_for('media', path='icons/tictactoe.png') }} ">
+                <img class="appIcon" src=" {{ url_for('media', path='icons/tictactoe.png') }} ">
             </a>
             <div class ="title">Tic-Tac-Toe</div>
         </div>
         <div class="game">
             <a href=" {{ url_for('game_page', game_id='2')}} ">
-                <img src=" {{ url_for('media', path='icons/minesweeper.png') }} ">
+                <img class="appIcon" src=" {{ url_for('media', path='icons/minesweeper.png') }} ">
             </a>
             <div class ="title">Minesweeper</div>
         </div>
         <div class="game">
             <a href=" {{ url_for('game_page', game_id='3')}} ">
-                <img src=" {{ url_for('media', path='icons/2048.png') }} ">
+                <img class="appIcon" src=" {{ url_for('media', path='icons/wordgame.png') }} ">
             </a>
-            <div class ="title">2048</div>
+            <div class ="title">Word Game</div>
+        </div>
+        <div class="game">
+            <a href=" {{ url_for('game_page', game_id='4')}} ">
+                <img class="appIcon" src=" {{ url_for('media', path='icons/placeholder.png') }} ">
+            </a>
+            <div class ="title">Memory Game</div>
         </div>
     </main>
 {% endblock content %}

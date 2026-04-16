@@ -173,9 +173,24 @@ main{
 
 #score{
     position: absolute;
-    top: 60%;
-    left:50%;
+    bottom: 4.2%;
+    font-size: 2em;
+    left:34%;
     transform: translate(-50%, -50%);
+}
+
+#info{
+    position: absolute;
+    bottom: 5%;
+    right:30%;
+    transform: translate(-50%, -50%);
+}
+
+
+#info:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #theButton:hover{
@@ -206,4 +221,15 @@ main{
 
 .input{
     padding: 10px;
+}
+
+.appIcon{
+    border-radius: 20px;
+}
+
+#gameTitle{
+    position: absolute; 
+    top:7%;
+    left:50%;
+    transform: translate(-50%, -50%);
 }

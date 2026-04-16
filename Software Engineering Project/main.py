@@ -52,7 +52,13 @@ games: list[dict] = [
     {
         "id": 3,
         "creator": "John Doe",
-        "title": "2048",
+        "title": "Word Game",
+        "content": "ticTacToe.js"
+    },
+    {
+        "id": 4,
+        "creator": "John Doe",
+        "title": "Memory Game",
         "content": "ticTacToe.js"
     }
 ]
