@@ -145,8 +145,8 @@ main{
 .game{
     display: inline-block;
     border: 1px solid hsl(0, 0, 50%);
-    margin: 5px;
-    width: 200px;
+    margin-left: 10%;
+    width: 300px;
 }
 
 .game img{
@@ -232,4 +232,18 @@ main{
     top:7%;
     left:50%;
     transform: translate(-50%, -50%);
+}
+
+#scoreboard{
+    position: absolute;
+    top:10%;
+    right:10%;
+}
+
+li{
+    list-style-type:none;
+    font-size: 1.75em;
+    border-top: 3px solid;
+    border-left: 3px solid;
+    border-right: 3px solid;
 }

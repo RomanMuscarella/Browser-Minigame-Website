@@ -77,17 +77,15 @@ def home(request: Request):
 
 @app.get("/games/{game_id}", include_in_schema=False)
 async def game_page(request: Request, game_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
-
-    result = await db.execute(select(models.Score).options(selectinload(models.Score.username)))
-
-    score = result.scalars().first()
-
     for game in games:
         if(game.get("id") == game_id):
+            result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val.desc()).limit(10).options(selectinload(models.Score.username)))
+
+            score = result.scalars().all()
             return templates.TemplateResponse(
             request,
             "gameWindowTemplate.html",
-            {"game": game, "score": score},
+            {"game": game, "scores": score},
         )
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Game not found")
 
