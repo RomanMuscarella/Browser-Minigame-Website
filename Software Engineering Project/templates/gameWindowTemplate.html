@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
     {% block content %}
         <h1 id="gameTitle">{{ game.title }}</h1>
+        <h2 id="listTitle">Top 10 for {{ game.title }}</h2>
         <ul id="scoreboard">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scoreboard
-            <li>User &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Score</li>
-            <li></li>
+            <li class="header"><span style="margin-left:10px">User</span><span style="margin-right: 10px;">Score</span></li>
             {% for entry in scores %}
-            <li>{{ entry.username.username | truncate(10)}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ entry.val }}</li>
+            <li class="entry"><span style="margin-left:10px">{{ entry.username.username | truncate(16) }}</span><span style="margin-right: 10px;">{{ entry.val }}</span></li>
             {% endfor %}
         </ul>
         <div id="window">
@@ -30,7 +29,5 @@
                 showInfo()
             })
         </script>
-        {% if game.title == 'Tic-Tac-Toe' %}
-            <script src=" {{ url_for('static', path='js/script2.js') }} "></script>
-        {% endif %}
+        <script src=" {{ url_for('static', path='js/script2.js') }} "></script>
     {% endblock script %}

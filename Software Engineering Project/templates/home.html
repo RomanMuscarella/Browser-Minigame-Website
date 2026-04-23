@@ -6,24 +6,44 @@
                 <img class="appIcon" src=" {{ url_for('media', path='icons/tictactoe.png') }} ">
             </a>
             <div class ="title">Tic-Tac-Toe</div>
+            <ul class="top3">
+                {% for entry in tttList %}
+                <li class="entry"><span style="margin-left:10px">{{ entry.username.username | truncate(10) }}</span><span style="margin-right: 10px;">{{ entry.val }}</span></li>
+                {% endfor %}
+            </ul>
         </div>
         <div class="game">
             <a href=" {{ url_for('game_page', game_id='2')}} ">
                 <img class="appIcon" src=" {{ url_for('media', path='icons/minesweeper.png') }} ">
             </a>
             <div class ="title">Minesweeper</div>
+            <ul class="top3">
+                {% for entry in msList %}
+                <li class="entry"><span style="margin-left:10px">{{ entry.username.username | truncate(16) }}</span><span style="margin-right: 10px;">{{ entry.val }}</span></li>
+                {% endfor %}
+            </ul>
         </div>
         <div class="game">
             <a href=" {{ url_for('game_page', game_id='3')}} ">
                 <img class="appIcon" src=" {{ url_for('media', path='icons/wordgame.png') }} ">
             </a>
             <div class ="title">Word Game</div>
+            <ul class="top3">
+                {% for entry in wgList %}
+                <li class="entry"><span style="margin-left:10px">{{ entry.username.username | truncate(16) }}</span><span style="margin-right: 10px;">{{ entry.val }}</span></li>
+                {% endfor %}
+            </ul>
         </div>
         <div class="game">
             <a href=" {{ url_for('game_page', game_id='4')}} ">
                 <img class="appIcon" src=" {{ url_for('media', path='icons/placeholder.png') }} ">
             </a>
             <div class ="title">Memory Game</div>
+            <ul class="top3">
+                {% for entry in mgList %}
+                <li class="entry"><span style="margin-left:10px">{{ entry.username.username | truncate(16) }}</span><span style="margin-right: 10px;">{{ entry.val }}</span></li>
+                {% endfor %}
+            </ul>
         </div>
     </main>
 {% endblock content %}

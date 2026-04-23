@@ -69,10 +69,26 @@ games: list[dict] = [
 @app.get("/", include_in_schema=False, name="home")
 def home(request: Request):
     script = "script.js"
+    
     return templates.TemplateResponse(
+        
         request,
         "home.html",
         {"script": script},
+    )
+
+@app.get("/games/menu", include_in_schema=False)
+async def game_homepage(request: Request, db: Annotated[AsyncSession, Depends(get_db)]):
+    gameLeaderboards = list()
+    script = "script.js"
+    for game in games:
+        result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val.desc()).limit(3).options(selectinload(models.Score.username)))
+        score = result.scalars().all()
+        gameLeaderboards.append(score)
+    return templates.TemplateResponse(
+        request,
+        "home.html",
+        {"script": script, "tttList": gameLeaderboards[0], "msList": gameLeaderboards[1], "wgList": gameLeaderboards[2], "mgList": gameLeaderboards[3]},
     )
 
 @app.get("/games/{game_id}", include_in_schema=False)

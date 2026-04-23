@@ -138,14 +138,19 @@ svg{
 }
 
 main{
-    margin-top: 60px;
-    margin-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 80px;
+    margin-left: 100px;
+    margin-right: 100px;
+    width: 100%;
 }
 
 .game{
     display: inline-block;
     border: 1px solid hsl(0, 0, 50%);
-    margin-left: 10%;
+
     width: 300px;
 }
 
@@ -157,6 +162,28 @@ main{
 .game .title{
     padding: 10px;
     text-align: center;
+}
+
+.game ul{
+    padding: 10px;
+    text-align: center;
+}
+
+.game ul li{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.game li:nth-child(1){
+    background-color: goldenrod;
+}
+.game li:nth-child(2){
+    background-color: silver;
+}
+.game li:nth-child(3){
+    background-color: rgb(176, 141, 87);
 }
 
 #theButton{
@@ -236,14 +263,45 @@ main{
 
 #scoreboard{
     position: absolute;
-    top:10%;
-    right:10%;
+    justify-content: right;
+    padding-left: 0px;
+    width: 17.5%;
+    top:15%;
+    right:6%;
+    border: solid 5px;
 }
 
 li{
     list-style-type:none;
     font-size: 1.75em;
-    border-top: 3px solid;
-    border-left: 3px solid;
-    border-right: 3px solid;
+}
+
+#scoreboard li {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#scoreboard li:nth-child(1){
+    background-color: steelblue;
+}
+
+#scoreboard li:nth-child(even){
+    background-color: lightseagreen;
+}
+
+#scoreboard li:nth-child(2){
+    background-color: goldenrod;
+}
+#scoreboard li:nth-child(3){
+    background-color: silver;
+}
+#scoreboard li:nth-child(4){
+    background-color: rgb(176, 141, 87);
+}
+
+#listTitle{
+    position: absolute;
+    top: 11%;
+    right: 8.75%;
 }
