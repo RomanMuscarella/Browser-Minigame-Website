@@ -1,0 +1,395 @@
+const playerSymbol = "X";
+const computerSymbol = "O";
+const winningLines = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+let board = Array(9).fill("");
+let currentMode = "easy";
+let isGameOver = false;
+let isPlayerTurn = true;
+let screen = "home";
+let statusText = "Your turn";
+let thinkingUntil = 0;
+let winningLine = [];
+let buttons = {};
+
+function setup() {
+  let hei = document.getElementById("window").clientHeight;
+  let wid = document.getElementById("window").clientWidth; 
+  canvas = createCanvas(wid, hei).parent("window")
+  textFont("Trebuchet MS");
+}
+
+function draw() {
+  drawBackground();
+
+  if (screen === "home") {
+    drawHomeScreen();
+    return;
+  }
+
+  drawGameScreen();
+
+  // Trigger the computer move after a short visual pause.
+  if (!isPlayerTurn && !isGameOver && millis() >= thinkingUntil) {
+    handleComputerMove();
+  }
+}
+
+function startGame(mode) {
+  currentMode = mode;
+  board = Array(9).fill("");
+  isGameOver = false;
+  isPlayerTurn = true;
+  statusText = "Your turn";
+  thinkingUntil = 0;
+  winningLine = [];
+  screen = "game";
+}
+
+function handlePlayerMove(index) {
+  if (isGameOver || !isPlayerTurn || board[index]) {
+    return;
+  }
+
+  makeMove(index, playerSymbol);
+
+  if (finishIfGameOver()) {
+    return;
+  }
+
+  isPlayerTurn = false;
+  statusText = "Computer is thinking...";
+  thinkingUntil = millis() + 250;
+}
+
+function handleComputerMove() {
+  if (isGameOver) {
+    return;
+  }
+
+  const move = currentMode === "easy" ? getRandomMove(board) : getBestMove(board);
+  if (move === null) {
+    return;
+  }
+
+  makeMove(move, computerSymbol);
+
+  if (finishIfGameOver()) {
+    return;
+  }
+
+  isPlayerTurn = true;
+  statusText = "Your turn";
+}
+
+function makeMove(index, symbol) {
+  board[index] = symbol;
+}
+
+function finishIfGameOver() {
+  const result = getWinner(board);
+
+  if (result.winner) {
+    isGameOver = true;
+    winningLine = result.line;
+    statusText = result.winner === playerSymbol ? "You win!" : "Computer wins!";
+    return true;
+  }
+
+  if (isDraw(board)) {
+    isGameOver = true;
+    winningLine = [];
+    statusText = "It's a draw!";
+    return true;
+  }
+
+  return false;
+}
+
+function getRandomMove(currentBoard) {
+  const availableMoves = currentBoard
+    .map((cell, index) => (cell ? null : index))
+    .filter((index) => index !== null);
+
+  if (!availableMoves.length) {
+    return null;
+  }
+
+  const randomIndex = Math.floor(Math.random() * availableMoves.length);
+  return availableMoves[randomIndex];
+}
+
+function getBestMove(currentBoard) {
+  let bestScore = -Infinity;
+  let bestMove = null;
+
+  currentBoard.forEach((cell, index) => {
+    if (cell) {
+      return;
+    }
+
+    currentBoard[index] = computerSymbol;
+    const score = minimax(currentBoard, false);
+    currentBoard[index] = "";
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMove = index;
+    }
+  });
+
+  return bestMove;
+}
+
+function minimax(currentBoard, isMaximizing) {
+  const result = getWinner(currentBoard);
+
+  if (result.winner === computerSymbol) {
+    return 1;
+  }
+
+  if (result.winner === playerSymbol) {
+    return -1;
+  }
+
+  if (isDraw(currentBoard)) {
+    return 0;
+  }
+
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+
+    currentBoard.forEach((cell, index) => {
+      if (cell) {
+        return;
+      }
+
+      currentBoard[index] = computerSymbol;
+      const score = minimax(currentBoard, false);
+      currentBoard[index] = "";
+      bestScore = Math.max(bestScore, score);
+    });
+
+    return bestScore;
+  }
+
+  let bestScore = Infinity;
+
+  currentBoard.forEach((cell, index) => {
+    if (cell) {
+      return;
+    }
+
+    currentBoard[index] = playerSymbol;
+    const score = minimax(currentBoard, true);
+    currentBoard[index] = "";
+    bestScore = Math.min(bestScore, score);
+  });
+
+  return bestScore;
+}
+
+function getWinner(currentBoard) {
+  for (const line of winningLines) {
+    const [a, b, c] = line;
+
+    if (
+      currentBoard[a] &&
+      currentBoard[a] === currentBoard[b] &&
+      currentBoard[a] === currentBoard[c]
+    ) {
+      return { winner: currentBoard[a], line };
+    }
+  }
+
+  return { winner: null, line: [] };
+}
+
+function isDraw(currentBoard) {
+  return currentBoard.every(Boolean);
+}
+
+function capitalize(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function mousePressed() {
+  if (screen === "home") {
+    if (isInsideButton(buttons.easy)) {
+      startGame("easy");
+    } else if (isInsideButton(buttons.hard)) {
+      startGame("hard");
+    }
+    return;
+  }
+
+  if (isInsideButton(buttons.playAgain)) {
+    startGame(currentMode);
+    return;
+  }
+
+  if (isInsideButton(buttons.home)) {
+    screen = "home";
+    return;
+  }
+
+  if (isGameOver || !isPlayerTurn) {
+    return;
+  }
+
+  const index = getBoardIndexFromMouse();
+  if (index !== null) {
+    handlePlayerMove(index);
+  }
+}
+
+function drawBackground() {
+  background("#f4efe6");
+  noStroke();
+  fill(255, 255, 255, 110);
+  circle(width * 0.2, height * 0.12, 220);
+  fill(219, 234, 254, 180);
+  circle(width * 0.82, height * 0.2, 280);
+  fill(255);
+  rect(30, 30, width - 60, height - 60, 28);
+}
+
+function drawHomeScreen() {
+  fill("#6b7280");
+  textAlign(LEFT, TOP);
+  textSize(14);
+  text("BROWSER EDITION", 74, 86);
+
+  fill("#1f2937");
+  textSize(50);
+  textStyle(BOLD);
+  text("Tic-Tac-Toe", 74, 118);
+
+  fill("#5b6475");
+  textStyle(NORMAL);
+  textSize(22);
+  text(
+    "Pick a difficulty to start.\nEasy mode plays randomly.\nHard mode never loses.",
+    74,
+    198
+  );
+
+  buttons.easy = { x: 74, y: 338, w: 492, h: 74, label: "Easy Mode" };
+  buttons.hard = { x: 74, y: 430, w: 492, h: 74, label: "Hard Mode" };
+
+  drawButton(buttons.easy, "#58b368", "#10381a");
+  drawButton(buttons.hard, "#f59e0b", "#3f2b00");
+}
+
+function drawGameScreen() {
+  fill("#6b7280");
+  textAlign(LEFT, TOP);
+  textSize(14);
+  text("CURRENT GAME", 74, 78);
+
+  fill("#1f2937");
+  textSize(34);
+  textStyle(BOLD);
+  text(`Mode: ${capitalize(currentMode)}`, 74, 104);
+
+  fill("#5b6475");
+  textStyle(NORMAL);
+  textSize(22);
+  text(statusText, 74, 156);
+
+  buttons.playAgain = { x: 356, y: 90, w: 112, h: 42, label: "Play Again" };
+  buttons.home = { x: 480, y: 90, w: 86, h: 42, label: "Home" };
+
+  drawButton(buttons.playAgain, "#edf2ff", "#2563eb", 18);
+  drawButton(buttons.home, "#ececec", "#4b5563", 18);
+  drawBoard();
+}
+
+function drawBoard() {
+  const boardX = 74;
+  const boardY = 220;
+  const cellSize = 154;
+  const gap = 12;
+
+  for (let i = 0; i < 9; i += 1) {
+    const row = Math.floor(i / 3);
+    const col = i % 3;
+    const x = boardX + col * (cellSize + gap);
+    const y = boardY + row * (cellSize + gap);
+    const isWinningCell = winningLine.includes(i);
+
+    fill(isWinningCell ? "#d9f99d" : "#fffdf8");
+    stroke("#d7d2c8");
+    strokeWeight(2);
+    rect(x, y, cellSize, cellSize, 22);
+
+    if (board[i]) {
+      noStroke();
+      fill(board[i] === playerSymbol ? "#1d4ed8" : "#be185d");
+      textAlign(CENTER, CENTER);
+      textStyle(BOLD);
+      textSize(74);
+      text(board[i], x + cellSize / 2, y + cellSize / 2 + 4);
+    }
+  }
+}
+
+function drawButton(button, backgroundColor, textColor, radius = 20) {
+  const hovered = isInsideButton(button);
+  const lift = hovered ? -2 : 0;
+
+  noStroke();
+  fill(0, 0, 0, 20);
+  rect(button.x, button.y + 8, button.w, button.h, radius);
+
+  fill(backgroundColor);
+  rect(button.x, button.y + lift, button.w, button.h, radius);
+
+  fill(textColor);
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(hovered ? 28 : 26);
+  text(button.label, button.x + button.w / 2, button.y + button.h / 2 + lift + 2);
+}
+
+function isInsideButton(button) {
+  if (!button) {
+    return false;
+  }
+
+  return (
+    mouseX >= button.x &&
+    mouseX <= button.x + button.w &&
+    mouseY >= button.y &&
+    mouseY <= button.y + button.h
+  );
+}
+
+function getBoardIndexFromMouse() {
+  const boardX = 74;
+  const boardY = 220;
+  const cellSize = 154;
+  const gap = 12;
+
+  for (let i = 0; i < 9; i += 1) {
+    const row = Math.floor(i / 3);
+    const col = i % 3;
+    const x = boardX + col * (cellSize + gap);
+    const y = boardY + row * (cellSize + gap);
+
+    if (mouseX >= x && mouseX <= x + cellSize && mouseY >= y && mouseY <= y + cellSize) {
+      return i;
+    }
+  }
+
+  return null;
+}

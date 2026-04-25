@@ -47,19 +47,19 @@ games: list[dict] = [
         "id": 2,
         "creator": "John Doe",
         "title": "Minesweeper",
-        "content": "ticTacToe.js"
+        "content": ".js"
     },
     {
         "id": 3,
         "creator": "John Doe",
         "title": "Word Game",
-        "content": "ticTacToe.js"
+        "content": ".js"
     },
     {
         "id": 4,
         "creator": "John Doe",
         "title": "Memory Game",
-        "content": "ticTacToe.js"
+        "content": "memory_game.js"
     }
 ]
 
