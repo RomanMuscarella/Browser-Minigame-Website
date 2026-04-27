@@ -1,6 +1,9 @@
-
-
-
+//so I forgor to add the highscore stuff for online
+//hopefully this saves
+// easy: "ms_easy"
+// medium: "ms_medium"
+// hard: "ms_hard"
+//highly recommend changes
 
 let gameFont;
 
