@@ -8,6 +8,7 @@ let gameFont;
 let currentSpeed;
 let gameState = "menu";
 let difficulty = "easy";
+let scoreSubmitted = false;
 
 let difficulties = {
   easy: { speed: 3, tolerance: 0.7 },
@@ -194,6 +195,7 @@ function mousePressed() {
 function startGame() {
   blocks = [];
   game_score = 0;
+  scoreSubmitted = false;
   cameraY = 0;
 
   currentSpeed = difficulties[difficulty].speed; 
@@ -241,6 +243,44 @@ function drawGameOver() {
   text(`High Score: ${highScores[difficulty] || 0}`, width/2, height/2 + 35);
 
   text("Click to return", width/2, height/2 + 90);
+
+  if(!scoreSubmitted){
+    scoreSubmitted = true;
+    submitScore();
+  }
+
+}
+
+async function submitScore(){
+    try{
+      const token = localStorage.getItem("access_token");
+      const scoreData = {
+            game: "Stack3D",
+            val: game_score,
+          };
+      const response = await fetch('/api/scores', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify(scoreData),
+      });
+      if(response.ok){
+        document.getElementById('successMessage').textContent =
+              'You won! Your score has been recorded';
+            showModal('successModal');
+      }else {
+              const error = await response.json();
+              document.getElementById('errorMessage').textContent = getErrorMessage(error);
+              showModal('errorModal');
+            }
+      } catch (error) {
+        document.getElementById('errorMessage').textContent =
+        'Congratulations! Sign in if you want your scores recorded';
+        showModal('errorModal');
+      }
+
 }
 
 function saveScore() {

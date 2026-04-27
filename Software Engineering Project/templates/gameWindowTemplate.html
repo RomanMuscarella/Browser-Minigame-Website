@@ -17,7 +17,7 @@
     {% endblock content %}
     {% block script %}
         <script type="module">
-            import { showModal } from '/static/js/utils.js';
+            import { getErrorMessage, showModal } from '/static/js/utils.js';
             const info = document.getElementById('info')
 
             function showInfo(){

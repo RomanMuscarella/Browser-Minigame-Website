@@ -6,6 +6,7 @@ let state = "start"
 
 let game_score = 0;
 let highScore;
+let scoreSubmitted = false;
 
 let inds = [0, 1, 2, 3]
 let f = [0, 0, 0, 0]
@@ -135,6 +136,7 @@ function flashCurrentIndicator() {
 
 function startGame() {
   game_score = 0
+  scoreSubmitted = false;
   sequence = [];
   sequence.push(floor(random(4)));
   ci = 0;
@@ -167,8 +169,44 @@ Click to play again`,
     0,
     0
   );
+  if(!scoreSubmitted){
+    scoreSubmitted = true;
+    submitScore();
+  }
   pop();
 }
+
+async function submitScore(){
+    try{
+      const token = localStorage.getItem("access_token");
+      const scoreData = {
+            game: "Memory Game",
+            val: game_score,
+          };
+      const response = await fetch('/api/scores', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify(scoreData),
+      });
+      if(response.ok){
+        document.getElementById('successMessage').textContent =
+              'You won! Your score has been recorded';
+            showModal('successModal');
+      }else {
+              const error = await response.json();
+              document.getElementById('errorMessage').textContent = getErrorMessage(error);
+              showModal('errorModal');
+            }
+      } catch (error) {
+        document.getElementById('errorMessage').textContent =
+        'Congratulations! Sign in if you want your scores recorded';
+        showModal('errorModal');
+      }
+
+  }
 
 function nextRound() {
   geen = 200;

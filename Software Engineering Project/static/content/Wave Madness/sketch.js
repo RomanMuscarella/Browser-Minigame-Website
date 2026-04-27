@@ -12,6 +12,7 @@ let obstacles = [];
 let speed;
 let difficulty = "Normal";
 let game_score = 0;
+let scoreSubmitted = false;
 let highScores = {};
 
 //////////////////// SETUP ////////////////////
@@ -235,6 +236,7 @@ function startGame(diff) {
   obstacles = [];
   player = new Player();
   game_score = 0;
+  scoreSubmitted = false;
 
   speed =
   diff === "Easy" ? 4 :
@@ -444,6 +446,43 @@ function drawGameOver() {
   textSize(40);
   text("Score: " + game_score, width / 2, height / 2);
   text("Press any key", width / 2, height / 2 + 60);
+
+  if(!scoreSubmitted){
+    scoreSubmitted = true;
+    submitScore();
+  }
+}
+
+async function submitScore(){
+    try{
+      const token = localStorage.getItem("access_token");
+      const scoreData = {
+            game: "Wave Madness",
+            val: game_score,
+          };
+      const response = await fetch('/api/scores', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify(scoreData),
+      });
+      if(response.ok){
+        document.getElementById('successMessage').textContent =
+              'You won! Your score has been recorded';
+            showModal('successModal');
+      }else {
+              const error = await response.json();
+              document.getElementById('errorMessage').textContent = getErrorMessage(error);
+              showModal('errorModal');
+            }
+      } catch (error) {
+        document.getElementById('errorMessage').textContent =
+        'Congratulations! Sign in if you want your scores recorded';
+        showModal('errorModal');
+      }
+
 }
 
 //////////////////// SCORES ////////////////////

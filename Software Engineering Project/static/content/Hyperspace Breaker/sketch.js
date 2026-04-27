@@ -16,6 +16,7 @@ let level = 1;
 let difficulty = "Normal";
 let speedMultiplier = 1;
 let game_score = 0;
+let scoreSubmitted = false;
 let lives = 3;
 let highScores = {};
 let activeEffects = [];
@@ -430,6 +431,7 @@ function initGame() {
   powerups = [];
 
   game_score = 0;
+  scoreSubmitted = false;
   lives = 3;
 
   createBricks();
@@ -1087,7 +1089,43 @@ function drawGameOver() {
   text("Game Over", width / 2, height / 2 - 40);
   textSize(20);
   text("Click to return", width / 2, height / 2 + 40);
+  if(!scoreSubmitted){
+    scoreSubmitted = true;
+    submitScore();
+  }
 }
+
+async function submitScore(){
+    try{
+      const token = localStorage.getItem("access_token");
+      const scoreData = {
+            game: "Hyperspace Breaker",
+            val: game_score,
+          };
+      const response = await fetch('/api/scores', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify(scoreData),
+      });
+      if(response.ok){
+        document.getElementById('successMessage').textContent =
+              'You won! Your score has been recorded';
+            showModal('successModal');
+      }else {
+              const error = await response.json();
+              document.getElementById('errorMessage').textContent = getErrorMessage(error);
+              showModal('errorModal');
+            }
+      } catch (error) {
+        document.getElementById('errorMessage').textContent =
+        'Congratulations! Sign in if you want your scores recorded';
+        showModal('errorModal');
+      }
+
+  }
 
 function drawScores() {
   textAlign(CENTER, CENTER);

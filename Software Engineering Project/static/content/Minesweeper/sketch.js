@@ -7,7 +7,6 @@
 
 let gameFont;
 
-
 let state = "menu";
 let explosions = [];
 let cols, rows, totalMines;
@@ -24,6 +23,7 @@ let difficulty = "";
 
 let flagsPlaced = 0;
 let revealQueue = [];
+let scoreSubmitted = false;
 
 let lastClickTime = 0;
 
@@ -202,6 +202,7 @@ function startGame(diff){
 
   gameOver = false;
   win = false;
+  scoreSubmitted = false;
 
   state = "game";
 }
@@ -243,7 +244,47 @@ function drawGame(){
   drawMenuButton();
 
   if(gameOver) text("Game Over", width/2, height-40);
-  if(win) text("You Win!", width/2, height-40);
+  if(win){
+    text("You Win!", width/2, height-40);
+
+    if(!scoreSubmitted){
+      scoreSubmitted = true;
+      submitScore();
+    }
+
+  }
+
+async function submitScore(){
+    try{
+      const token = localStorage.getItem("access_token");
+      const scoreData = {
+            game: "Minesweeper",
+            val: timer,
+          };
+      const response = await fetch('/api/scores', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify(scoreData),
+      });
+      if(response.ok){
+        document.getElementById('successMessage').textContent =
+              'You won! Your score has been recorded';
+            showModal('successModal');
+      }else {
+              const error = await response.json();
+              document.getElementById('errorMessage').textContent = getErrorMessage(error);
+              showModal('errorModal');
+            }
+      } catch (error) {
+        document.getElementById('errorMessage').textContent =
+        'Congratulations! Sign in if you want your scores recorded';
+        showModal('errorModal');
+      }
+
+      }
 }
 
 /* ================= INPUT ================= */

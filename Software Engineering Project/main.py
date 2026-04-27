@@ -41,43 +41,57 @@ games: list[dict] = [
         "id": 1,
         "creator": "John Doe",
         "title": "Tic-Tac-Toe",
-        "content": "Tic Tac Toe"
+        "content": "Tic Tac Toe",
+        "icon": "tictactoe.png",
+        "leaderboard": "tttList",
     },
     {
         "id": 2,
         "creator": "John Doe",
         "title": "Minesweeper",
-        "content": "Minesweeper"
+        "content": "Minesweeper",
+        "icon": "Minesweeper.png",
+        "leaderboard": "msList",
     },
     {
         "id": 3,
         "creator": "John Doe",
         "title": "Word Game",
-        "content": ".js"
+        "content": ".js",
+        "icon": "wordgame.png",
+        "leaderboard": "wgList",
     },
     {
         "id": 4,
         "creator": "John Doe",
         "title": "Memory Game",
-        "content": "Memory Game"
+        "content": "Memory Game",
+        "icon": "MemoryGame.png",
+        "leaderboard": "mgList",
     },
     {
         "id": 5,
         "creator": "John Doe",
         "title": "Hyperspace Breaker",
-        "content": "Hyperspace Breaker"
+        "content": "Hyperspace Breaker",
+        "icon": "HyperspaceBreaker.png",
+        "leaderboard": "hbList",
     },
     {
         "id": 6,
         "creator": "John Doe",
         "title": "Stack3D",
-        "content": "Stack3D"
+        "content": "Stack3D",
+        "icon": "Stack3D.png",
+        "leaderboard": "sdList",
     },
     {
         "id": 7,
         "creator": "John Doe",
         "title": "Wave Madness",
-        "content": "Wave Madness"
+        "content": "Wave Madness",
+        "icon": "WaveMadness.png",
+        "leaderboard": "wmList",
     }
 ]
 
@@ -86,13 +100,13 @@ games: list[dict] = [
 
 @app.get("/", include_in_schema=False, name="home")
 def home(request: Request):
-    script = "script.js"
+    list = games
     
     return templates.TemplateResponse(
         
         request,
-        "home.html",
-        {"script": script},
+        "index.html",
+        {"games": list},
     )
 
 @app.get("/games/menu", include_in_schema=False)
@@ -100,21 +114,28 @@ async def game_homepage(request: Request, db: Annotated[AsyncSession, Depends(ge
     gameLeaderboards = list()
     script = "script.js"
     for game in games:
-        result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val.desc()).limit(3).options(selectinload(models.Score.username)))
-        score = result.scalars().all()
-        gameLeaderboards.append(score)
+        if(game.get("title") == "Minesweeper"):
+            result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val).limit(3).options(selectinload(models.Score.username)))
+            score = result.scalars().all()
+            gameLeaderboards.append(score)
+        else:
+            result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val.desc()).limit(3).options(selectinload(models.Score.username)))
+            score = result.scalars().all()
+            gameLeaderboards.append(score)
     return templates.TemplateResponse(
         request,
         "home.html",
-        {"script": script, "tttList": gameLeaderboards[0], "msList": gameLeaderboards[1], "wgList": gameLeaderboards[2], "mgList": gameLeaderboards[3]},
+        {"script": script, "tttList": gameLeaderboards[0], "msList": gameLeaderboards[1], "wgList": gameLeaderboards[2], "mgList": gameLeaderboards[3], "hbList": gameLeaderboards[4], "sdList": gameLeaderboards[5], "wmList": gameLeaderboards[6]},
     )
 
 @app.get("/games/{game_id}", include_in_schema=False)
 async def game_page(request: Request, game_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
     for game in games:
         if(game.get("id") == game_id):
-            result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val.desc()).limit(10).options(selectinload(models.Score.username)))
-
+            if(game.get("id") == 2):
+                result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val).limit(10).options(selectinload(models.Score.username)))
+            else:
+                result = await db.execute(select(models.Score).where(models.Score.game == game.get("title")).order_by(models.Score.val.desc()).limit(10).options(selectinload(models.Score.username)))
             score = result.scalars().all()
             return templates.TemplateResponse(
             request,

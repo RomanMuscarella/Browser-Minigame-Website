@@ -190,13 +190,14 @@ main{
 
 #theButton{
     position: absolute;
-    top: 50%;
+    top: 140%;
     left: 50%;
+    font-size: 2.5em;
     transform: translate(-50%, -50%);
-    height: 90px;
-    width: 135px;
-    background-color: lightcoral;
-    border: coral solid;
+    height: 12vh;
+    width: 12vw;
+    background-color: yellow;
+    border: black solid;
     border-radius: 50px;
 }
 
@@ -223,7 +224,7 @@ main{
 }
 
 #theButton:hover{
-    background-color: pink;
+    background-color: greenyellow;
     cursor: pointer;
 }
 
@@ -306,4 +307,55 @@ li{
     position: absolute;
     top: 11%;
     right: 8.75%;
+}
+
+homepage{
+    position: absolute;
+    width: 100%;
+    top: 7.5%;
+}
+
+homepage h1{
+    text-align: center;
+    font-size: 3em;
+    animation: rainbow 5s linear infinite;
+}
+homepage h2{
+    text-align: center;
+    font-size: 1.75em;
+}
+
+.newGame{
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    border: 1px solid hsl(0, 0, 50%);
+
+    width: 300px;
+}
+
+.newGame img{
+    width: 100%;
+    height: auto;
+}
+
+.newGame .title{
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+
+.newGame h3{
+    text-align: center;
+    font-size: 1.75em;
+}
+
+@keyframes rainbow{
+    0% { color: red }
+    16% {color: orange }
+    32% {color: yellow}
+    48% {color: greenyellow}
+    64% {color: blue}
+    80% {color: purple}
+    100% {color: red}
 }

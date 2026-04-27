@@ -1,1 +1,25 @@
 {% extends "layout.html" %}
+
+{% block content %}
+    <homepage>
+        <h1>Welcome to the Olympic Minigames!</h1>
+        <h2>Come play our variety of games and go for the gold!</h2>
+        <br>
+        <br>
+        <br>
+        <h2>Sign-up and login if you want to record your scores on our leaderboards</h2>
+        <br>
+        <a href="{{ url_for('game_homepage') }}"><button id="theButton">Get Started</button></a>
+    </homepage>
+    <div class="newGame">
+            <h3>Check out our most recent addition!</h3>
+            <a href=" {{ url_for('game_page', game_id= games|length - 1)}}">
+                <img class="appIcon" src=" {{ url_for('media', path='icons/' + games[games|length - 1].icon) }} ">
+            </a>
+            <div class ="title">{{ games[games|length -1].title }}</div>
+        </div>
+    <img src="/static/favicon.ico" style="position: absolute; left: 0%; top:10%; height: 85%; width: auto;">
+{% endblock content %}
+{% block script %}
+    <script src=" {{ url_for('static', path='js/script.js') }} "></script>
+{% endblock script %}
