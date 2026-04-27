@@ -40,7 +40,8 @@ function setup() {
 }
 
 function draw() {
-  background(30);
+  
+  background(20, 40, 100); 
   
   if (gameState === "HOME") {
     drawHomeScreen();
@@ -75,10 +76,10 @@ function drawGameScreen() {
     gameState = "GAMEOVER";
   }
 
-  // Timer Bar
-  fill(50);
+  // Timer Bar 
+  fill(60, 0, 0); 
   rect(50, 30, 500, 10);
-  fill(remaining > 10 ? 100 : 255, 100, 100);
+  fill(255, 0, 0); 
   rect(50, 30, map(remaining, 0, 60, 0, 500), 10);
 
   // Stats
@@ -89,16 +90,16 @@ function drawGameScreen() {
   textAlign(RIGHT);
   text(`Time: ${remaining}s`, 550, 70);
 
-  // Scrambled Letters
+  // Scrambled Letters 
   textAlign(CENTER);
   textSize(32);
   let displayLetters = scrambledLetters.toUpperCase().split("").join(" ");
-  fill(200, 200, 255);
+  fill(255);
   text(displayLetters, width / 2, 150);
 
   // Input Box (Custom GUI)
-  fill(50);
-  stroke(100);
+  fill(255, 255, 255, 30);
+  stroke(255);
   rect(width / 2 - 100, 190, 200, 40, 5);
   fill(255);
   noStroke();
@@ -106,7 +107,7 @@ function drawGameScreen() {
   text(userInput.toUpperCase(), width / 2, 220);
 
   textSize(14);
-  fill(150);
+  fill(200);
   text("Type and press ENTER", width / 2, 260);
 }
 
