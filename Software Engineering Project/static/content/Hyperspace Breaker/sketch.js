@@ -410,9 +410,9 @@ function clicked(y) {
 //////////////////// GAME ////////////////////
 function startGame(diff) {
   difficulty = diff;
-
+//holy difficulty change
   speedMultiplier =
-    diff === "Easy" ? 1.5 : diff === "Normal" ? 2.25 : diff === "Hard" ? 3 : 4;
+    diff === "Easy" ? 1.25 : diff === "Normal" ? 1.75 : diff === "Hard" ? 2.5 : 3.25;
 
   initGame();
   state = "game";
@@ -1010,14 +1010,14 @@ function maybeSpawnPowerup(x, y) {
       ? 0.25
       : difficulty === "Hard"
       ? 0.15
-      : 1;
+      : 0.5;
 
   if (random() < chance) {
     let types;
 
     if (difficulty === "Extreme") {
       // ONLY NEGATIVE
-      types = ["fast", "short", "savingGrace"];
+      types = ["fast", "short", "savingGrace", "multiball"];
     } else {
       // mixed pool
       types = ["multiball", "long", "short", "fast", "slow", "big"];
