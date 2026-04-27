@@ -18,23 +18,26 @@ let difficulties = {
 let blocks = [];
 let currentBlock;
 let direction = 1;
-let score = 0;
+let game_score = 0;
 let highScores = {};
 
 let buttons = [];
 let cameraY = 0; // NEW camera offset
 
 function preload(){
-  gameFont = loadFont("bluewave.ttf")
+  gameFont = loadFont("../static/content/_fonts/bluewave.ttf")
 }
 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let hei = document.getElementById("window").clientHeight;
+  let wid = document.getElementById("window").clientWidth; 
+  
+  canvas = createCanvas(wid, hei).parent("window")
   loadScores();
   createMenuButtons();
   initBlobs();
-  createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(wid, hei).parent("window")
   loadScores();
   createMenuButtons();
   textFont(gameFont)
@@ -190,7 +193,7 @@ function mousePressed() {
 
 function startGame() {
   blocks = [];
-  score = 0;
+  game_score = 0;
   cameraY = 0;
 
   currentSpeed = difficulties[difficulty].speed; 
@@ -218,7 +221,7 @@ function placeBlock() {
     currentBlock.x = max(currentBlock.x, last.x);
 
     blocks.push(currentBlock);
-    score++;
+    game_score++;
     currentSpeed = min(currentSpeed * 1.05, difficulties[difficulty].speed * 3);
     spawnBlock();
   } else {
@@ -234,15 +237,15 @@ function drawGameOver() {
   text("Game Over", width/2, height/3);
 
   textSize(48);
-  text(`Score: ${score}`, width/2, height/2);
+  text(`Score: ${game_score}`, width/2, height/2);
   text(`High Score: ${highScores[difficulty] || 0}`, width/2, height/2 + 35);
 
   text("Click to return", width/2, height/2 + 90);
 }
 
 function saveScore() {
-  if (!highScores[difficulty] || score > highScores[difficulty]) {
-    highScores[difficulty] = score;
+  if (!highScores[difficulty] || game_score > highScores[difficulty]) {
+    highScores[difficulty] = game_score;
     localStorage.setItem("stackScores", JSON.stringify(highScores));
   }
 }

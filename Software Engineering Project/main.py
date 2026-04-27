@@ -41,13 +41,13 @@ games: list[dict] = [
         "id": 1,
         "creator": "John Doe",
         "title": "Tic-Tac-Toe",
-        "content": "ticTacToe.js"
+        "content": "Tic Tac Toe"
     },
     {
         "id": 2,
         "creator": "John Doe",
         "title": "Minesweeper",
-        "content": ".js"
+        "content": "Minesweeper"
     },
     {
         "id": 3,
@@ -59,7 +59,25 @@ games: list[dict] = [
         "id": 4,
         "creator": "John Doe",
         "title": "Memory Game",
-        "content": "memory_game.js"
+        "content": "Memory Game"
+    },
+    {
+        "id": 5,
+        "creator": "John Doe",
+        "title": "Hyperspace Breaker",
+        "content": "Hyperspace Breaker"
+    },
+    {
+        "id": 6,
+        "creator": "John Doe",
+        "title": "Stack3D",
+        "content": "Stack3D"
+    },
+    {
+        "id": 7,
+        "creator": "John Doe",
+        "title": "Wave Madness",
+        "content": "Wave Madness"
     }
 ]
 

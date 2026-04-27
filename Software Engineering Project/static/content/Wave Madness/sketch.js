@@ -11,17 +11,20 @@ let player;
 let obstacles = [];
 let speed;
 let difficulty = "Normal";
-let score = 0;
+let game_score = 0;
 let highScores = {};
 
 //////////////////// SETUP ////////////////////
 
 function preload(){
-  gameFont = loadFont("NEONLEDLight.otf")
+  gameFont = loadFont("../static/content/_fonts/NEONLEDLight.otf")
 }
 function setup() {
   textFont(gameFont)
-  createCanvas(windowWidth, windowHeight);
+  let hei = document.getElementById("window").clientHeight;
+  let wid = document.getElementById("window").clientWidth; 
+  
+  canvas = createCanvas(wid, hei).parent("window")
   loadScores();
   player = new Player();
 }
@@ -231,7 +234,7 @@ function startGame(diff) {
   difficulty = diff;
   obstacles = [];
   player = new Player();
-  score = 0;
+  game_score = 0;
 
   speed =
   diff === "Easy" ? 4 :
@@ -243,7 +246,7 @@ function startGame(diff) {
 }
 
 function runGame() {
-  score++;
+  game_score++;
 
   player.update();
   player.show();
@@ -427,7 +430,7 @@ function drawHUD() {
   fill(0, 255, 255);
   textSize(40);
   textAlign(LEFT, TOP);
-  text("Score: " + score, 20, 20);
+  text("Score: " + game_score, 20, 20);
 }
 
 function drawGameOver() {
@@ -439,7 +442,7 @@ function drawGameOver() {
 
   fill(255);
   textSize(40);
-  text("Score: " + score, width / 2, height / 2);
+  text("Score: " + game_score, width / 2, height / 2);
   text("Press any key", width / 2, height / 2 + 60);
 }
 
@@ -465,8 +468,8 @@ function loadScores() {
 }
 
 function saveScore() {
-  if (score > highScores[difficulty]) {
-    highScores[difficulty] = score;
+  if (game_score > highScores[difficulty]) {
+    highScores[difficulty] = game_score;
     localStorage.setItem("waveScores", JSON.stringify(highScores));
   }
 }

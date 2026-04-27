@@ -44,14 +44,16 @@ let currentTheme = "dark";
 
 
 function preload(){
-  gameFont = loadFont("airstrike.ttf")
+  gameFont = loadFont("../static/content/_fonts/airstrike.ttf")
 }
 
 
 /* ================= SETUP ================= */
 function setup(){
   textFont(gameFont)
-  createCanvas(windowWidth, windowHeight);
+  let hei = document.getElementById("window").clientHeight;
+  let wid = document.getElementById("window").clientWidth; 
+  canvas = createCanvas(wid, hei).parent("window")
   textAlign(CENTER, CENTER);
 }
 
