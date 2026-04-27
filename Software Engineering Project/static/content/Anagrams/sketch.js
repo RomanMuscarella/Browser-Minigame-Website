@@ -11,12 +11,15 @@ const timeLimit = 60000; // 60 seconds
 
 // Preload text files
 function preload() {
-  puzzleWordsRaw = loadStrings('six_letter_words.txt');
-  dictionaryRaw = loadStrings('words_alpha.txt');
+  let fp = "../media/libs/";
+  puzzleWordsRaw = loadStrings(fp + 'six_letter_words.txt');
+  dictionaryRaw = loadStrings(fp + 'words_alpha.txt');
 }
 
 function setup() {
-  createCanvas(600, 400);
+  let hei = document.getElementById("window").clientHeight;
+  let wid = document.getElementById("window").clientWidth; 
+  createCanvas(hei, wid).parent("window");
   textFont('Courier New');
   
   // Use custom manual structures for storage
