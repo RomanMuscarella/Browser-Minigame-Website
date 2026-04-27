@@ -13,21 +13,17 @@ from auth import CurrentUser
 
 router = APIRouter()
 
-@router.post(
-    "",
-    response_model=ScoreResponse,
-    status_code=status.HTTP_201_CREATED,
-)
+@router.post("",response_model=ScoreResponse,status_code=status.HTTP_201_CREATED,)
 async def create_score(score: ScoreCreate, current_user:CurrentUser, db: Annotated[AsyncSession, Depends(get_db)]):
-    new_post = models.Score(
+    new_score = models.Score(
         game = score.game,
         val=score.val,
         user_id=current_user.id,
     )
-    db.add(new_post)
+    db.add(new_score)
     await db.commit()
-    await db.refresh(new_post, attribute_names=["username"])
-    return new_post
+    await db.refresh(new_score, attribute_names=["username"])
+    return new_score
 
 @router.get("/{score_id}", response_model=ScoreResponse)
 async def get_score(score_id: int, db: Annotated[AsyncSession, Depends(get_db)]):

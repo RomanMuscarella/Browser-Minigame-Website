@@ -57,7 +57,7 @@ games: list[dict] = [
         "id": 3,
         "creator": "John Doe",
         "title": "Word Game",
-        "content": ".js",
+        "content": "Anagrams",
         "icon": "wordgame.png",
         "leaderboard": "wgList",
     },
